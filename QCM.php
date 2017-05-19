@@ -11,9 +11,10 @@ if( isset($_POST['submit']) ){
     $Nom = $_POST['Nom'];
     $email = $_POST['email'];
     
-    $from = trim($from);
-    $from = filter_var($email, FILTER_SANITIZE_EMAIL);
-    //$_REQUEST
+    
+    $email=sanitize($_POST['email'],FILTER_SANITIZE_EMAIL)
+    
+
     $message_retour = verrificateur(10, $prenom);
 
     mail($to, "Voila tes résultat,connard.", $message_retour);
@@ -28,11 +29,6 @@ if( isset($_POST['submit']) ){
 
 //rajouter dans label la fonctions
 
-   /* elseif ($color == 'vrai') {
-        echo 'class="bg-success"';}
-        elseif ($color == 'faux') {
-                echo "class='bg-warning'";
-        }*/
         
     
 
@@ -261,6 +257,12 @@ function verrificateur($nbquestions, $prenom){
 
 }
 
+//Sanitization
+
+function sanitize($var,$filtre){
+
+        filter_var($var,FILTER_SANITIZE_EMAIL);
+}
 //pour le check du radio
 function mark_input_as_checked( $key, $value){
     if( isset( $_POST["submit"] ) && $_POST[$key]== $value ){
