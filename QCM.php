@@ -13,7 +13,7 @@ if( isset($_POST['submit']) ){
     
     $from = trim($from);
     $from = filter_var($email, FILTER_SANITIZE_EMAIL);
-    
+    //$_REQUEST
     $message_retour = verrificateur(10, $prenom);
 
     mail($to, "Voila tes résultat,connard.", $message_retour);
@@ -25,52 +25,16 @@ if( isset($_POST['submit']) ){
 
 
 
-function verrificateur($nbquestions, $prenom){
 
-    $good = 0;
-    $message = "";
+//rajouter dans label la fonctions
 
-    for ($i=1; $i <= $nbquestions; $i++) { 
-
-        if ($_POST['q'.$i] == 'v' ){
-
-            
-
-            $good = $good + 1;
-
-        }
+   /* elseif ($color == 'vrai') {
+        echo 'class="bg-success"';}
+        elseif ($color == 'faux') {
+                echo "class='bg-warning'";
+        }*/
         
-
-    }
     
-    $resultat = ((100 * $good)/$nbquestions)."%";
-
-     
-    if ($good == 0) {
-
-        $message = $prenom."..t'es con ou quoi ? ".$resultat."...no comment";
-        
-    } elseif ($good < 5 ){
-
-        $message = "wow ".$resultat.' ! '.' bien ouej, tu es effectivement bien plus con que prevus' ;
-        
-    } elseif ($good == 5 ){
-
-        $message = "..presque ".$prenom." mais ".$resultat." cest pas assez, retournes chez ta mere";
-        
-    } else {
-        $message = $resultat.", pas mal ".$prenom." continue comme ca paumé";
-        
-    }
-    
-    
-    return $message;
-
-}
-
-
-
-
 
 
 
@@ -123,10 +87,18 @@ function verrificateur($nbquestions, $prenom){
     <p class="question">1. Quel est le nom du système d'exploitation mis au point par Google ?</p>
 
             <ul class="reponse">
-                <input type="radio" name="q1" value="f" id="q1a"><label   for="q1a">Chrome</label><br/>
-                <input type="radio" name="q0" value="v" id="q1b"><label   for="q1b">Chrome OS</label><br/>
-                <input type="radio" name="q1" value="f" id="q1c"><label for="q1c">Chrobuntu</label><br/>
-                <input type="radio" name="q1" value="f" id="q1d"><label  for="q1d">Safari</label><br/>
+                <input type="radio" name="q1" value="a" id="q1a" <?php mark_input_as_checked('q1','a') ?> >
+
+                <label <?php color('faux') ?> for="q1a">Chrome</label><br/>
+                
+                <input type="radio" name="q1" value="v" id="q1b" <?php mark_input_as_checked('q1','v') ?> >
+                <label <?php color('vrai') ?> for="q1b">Chrome OS</label><br/>
+                
+                <input type="radio" name="q1" value="c" id="q1c"<?php mark_input_as_checked('q1','c') ?> >
+                <label <?php color('faux') ?> for="q1c">Chrobuntu</label><br/>
+                
+                <input type="radio" name="q1" value="d" id="q1d" <?php mark_input_as_checked('q1','d') ?> >
+                <label  <?php color('faux','q1','d') ?> for="q1d">Safari</label><br/>
             </ul>
 
 
@@ -139,7 +111,7 @@ function verrificateur($nbquestions, $prenom){
 
             <ul class="reponse">
                 <input type="radio" name="q2" value="f" id="q2a"><label for="q2a">  Safia n'a pas interrogé les bons etudiants?</label><br/>
-                <input type="radio" name="q0" value="v" id="q2b"><label for="q2b">  David est un homme</label><br/>
+                <input type="radio" name="q2" value="v" id="q2b"><label for="q2b">  David est un homme</label><br/>
                 <input type="radio" name="q2" value="f" id="q2c"><label for="q2c"> la reponse 3</label><br/>
                 <input type="radio" name="q2" value="f" id="q2d"><label for="q2d">
                     David est un poulet.
@@ -153,7 +125,7 @@ La nièce dit : "Tu es plus vieux que moi".
 Quel âge ont-ils ?</p>
 
             <ul class="reponse">
-                <input type="radio" name="q0" value="v" id="q3a"><label for="q3a">L'oncle a 31 ans et la nièce a 14 ans.</label><br/>
+                <input type="radio" name="q3" value="v" id="q3a"><label for="q3a">L'oncle a 31 ans et la nièce a 14 ans.</label><br/>
                 <input type="radio" name="q3" value="f" id="q3b"><label for="q3b">LOL</label><br/>
                 <input type="radio" name="q3" value="f" id="q3c"><label for="q3c">L'oncle a 33 ans et la nièce a 17 ans.</label><br/>
                 <input type="radio" name="q3" value="f" id="q3d"><label for="q3d">L'oncle a 30 ans et la nièce a 15 ans.</label><br/>
@@ -232,7 +204,7 @@ Quel âge ont-ils ?</p>
             </ul>
 
        
-            <button type="submit" name="submit" class="btn btn-primary btn-lg">Verifier mes reponses!</button>
+            <button type="submit" name="submit" value="submit" class="btn btn-primary btn-lg">Verifier mes reponses!</button>
 
 
 
@@ -243,3 +215,70 @@ Quel âge ont-ils ?</p>
 </body>
 
 </html>
+
+<?php
+//helpers
+function verrificateur($nbquestions, $prenom){
+
+    $good = 0;
+    $message = "";
+
+    for ($i=1; $i <= $nbquestions; $i++) { 
+
+        if ($_POST['q'.$i] == 'v' ){
+
+            
+
+            $good = $good + 1;
+
+        }
+        
+
+    }
+    
+    $resultat = ((100 * $good)/$nbquestions)."%";
+//utiliser switch 
+     
+    if ($good == 0) {
+
+        $message = $prenom."..t'es con ou quoi ? ".$resultat."...no comment";
+        
+    } elseif ($good < 5 ){
+
+        $message = "wow ".$resultat.' ! '.' bien ouej, tu es effectivement bien plus con que prevus' ;
+        
+    } elseif ($good == 5 ){
+
+        $message = "..presque ".$prenom." mais ".$resultat." cest pas assez, retournes chez ta mere";
+        
+    } else {
+        $message = $resultat.", pas mal ".$prenom." continue comme ca paumé";
+        
+    }
+    
+    
+    return $message;
+
+}
+
+//pour le check du radio
+function mark_input_as_checked( $key, $value){
+    if( isset( $_POST["submit"] ) && $_POST[$key]== $value ){
+        echo 'checked="checked" ';
+    }
+    if( isset( $_POST["submit"] ) && $_POST[$key]== $value ){
+        echo 'checked="checked"  ';
+    }   
+  }
+  
+
+
+  //la couleur rouge ou verte
+  function color($color){
+  if( isset( $_POST["submit"] )  && $color == 'vrai'  ){
+        echo ' class="bg-success" ';
+    }
+    if( isset( $_POST["submit"] )  && $color == 'faux'  ){
+        echo ' class="bg-warning" ';
+    }
+}
